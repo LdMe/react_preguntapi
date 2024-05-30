@@ -56,7 +56,6 @@ const Game = ({ category, maxQuestions = 10, onReset }) => {
             <QuestionCard key={state.questions[state.questionIndex]._id} question={state.questions[state.questionIndex]} onAnswer={handleAnswer} />
             <p>Score: {state.score}</p>
             <p>Pregunta {state.questionIndex + 1}/{maxQuestions}</p>
-            <button onClick={onReset}>Reiniciar</button>
         </section>
     );
 }

@@ -1,14 +1,18 @@
 import { useContext } from "react";
 import { LoggedInContext } from "../../context/loggedInContext";
 import "./Navbar.css";
-const Navbar =() =>{
-    const loggedIn = useContext(LoggedInContext);
+const Navbar =({goHome}) =>{
+    const {loggedIn, logOut} = useContext(LoggedInContext);
+    function handleClicked(){
+        console.log("clicked");
+        goHome();
+    }
     return (
         <nav className="navbar">
             <ul>
-                <li>Home</li>
+                <li onClick={handleClicked}>Inicio</li>
                 {loggedIn ?
-                <li>Logout</li>
+                <li onClick={logOut}>Logout</li>
                 :
                 <li>Login</li>
                 }

@@ -10,21 +10,31 @@ function App() {
   const [category, setCategory] = useState(null);
 
   
-  if (!loggedIn) {
-    return <Register onLogin={() => setLoggedIn(true)} />
+  function logOut() {
+    setLoggedIn(false);
+    setCategory(null);
   }
-
-
+  function goHome() {
+    setCategory(null);
+  }
+  let content =  <Register onLogin={() => setLoggedIn(true)} />;
+  if (loggedIn) {
+    content = (
+      <>
+        {category ?
+          <Game category={category} />
+          :
+          <Categories onSelect={setCategory} />
+        }
+      </>
+    )
+  }
   return (
-    <LoggedInContext.Provider value={loggedIn}>
+    <LoggedInContext.Provider value={{loggedIn, logOut}}>
       {/* */}
-      <Navbar />
-      {category ?
-        <Game category={category} onReset={()=>setCategory(null)} />
-        :
-        <Categories onSelect={setCategory} />
+      <Navbar goHome={goHome} />
 
-      }
+      {content}
 
     </LoggedInContext.Provider>
   )
