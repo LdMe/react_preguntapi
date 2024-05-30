@@ -22,7 +22,7 @@ function App() {
     content = (
       <>
         {category ?
-          <Game category={category} />
+          <Game category={category} onReset={goHome}/>
           :
           <Categories onSelect={setCategory} />
         }
