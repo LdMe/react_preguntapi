@@ -44,7 +44,6 @@ const Register = ({onLogin}) => {
                  setError(result.error);
              }
         }
-        console.log("resultado",result);
     }
     return (
         <section className="register-login">

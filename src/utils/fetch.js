@@ -3,7 +3,6 @@ const API_URL = "https://api.preguntapi.tbfsb.com/api";
 
 const fetchData = async(route,method,inputData=null)=>{
     const url = new URL(API_URL + route);
-    console.log("inputData",inputData)
     const fetchOptions = {
         method:method,
         headers:{
@@ -46,9 +45,13 @@ const getCategories = async()=>{
     const result = await fetchData("/categories","get");
     return result;
 }
-
+const getQuestions = async(categoryName) =>{
+    const result = await fetchData("/questions/categories/"+categoryName,"get");
+    return result;
+}
 export {
     register,
     login,
-    getCategories
+    getCategories,
+    getQuestions
 }
