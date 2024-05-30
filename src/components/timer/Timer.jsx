@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
+import "./Timer.css";
 const Timer =({maxTime = 4,onEnd})=>{
     const [time,setTime] = useState(maxTime);
     const isEndedRef = useRef(false);

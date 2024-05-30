@@ -1,0 +1,16 @@
+/* Game.css */
+.game-over {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .game-over button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }

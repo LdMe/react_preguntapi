@@ -1,7 +1,7 @@
 import { useState } from "react";
-import {register,login} from "../utils/fetch"
-import { saveToken } from "../utils/local";
-
+import {register,login} from "../../utils/fetch"
+import { saveToken } from "../../utils/local";
+import "./Register.css";
 const Register = ({onLogin}) => {
     const [isRegister, setIsRegister] = useState(false);
     const [username, setUsername] = useState("");

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import Register from './components/Register'
-import Categories from "./components/Categories"
+import Register from './components/register/Register'
+import Categories from "./components/categories/Categories"
 import './App.css'
 import { LoggedInContext } from './context/loggedInContext'
-import Navbar from './components/Navbar'
+import Navbar from './components/navbar/Navbar'
 import Game from './components/game/Game'
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);

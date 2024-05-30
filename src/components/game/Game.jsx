@@ -2,6 +2,7 @@ import { getQuestions } from "../../utils/fetch"
 import { useEffect, useReducer } from "react";
 import QuestionCard from "../question/QuestionCard";
 import gameReducer from "../../reducers/gameReducer";
+import "./Game.css";
 
 const initialState = {
     questions: [],
@@ -9,26 +10,32 @@ const initialState = {
     score: 0,
     isEnded: false
 };
-const Game = ({ category, maxQuestions = 3, onReset }) => {
+const Game = ({ category, maxQuestions = 10, onReset }) => {
     const [state, dispatch] = useReducer(gameReducer, initialState)
 
     useEffect(() => {
         fetchQuestions(category);
     }, [category])
-    useEffect(() => {
-        if (state.questionIndex >= maxQuestions) {
-            dispatch({ type: 'END_GAME' });
-        }
-    }, [state.questionIndex, maxQuestions]);
+    function getRandomQuestions(questions, maxQuestions) {
+        const maxIndex = questions.length < maxQuestions ? questions.length : maxQuestions;
+
+        return questions.sort(() => Math.random() - Math.random()).slice(0, maxIndex);
+        
+    }
     async function fetchQuestions(category) {
         const result = await getQuestions(category);
-        dispatch({ type: 'SET_QUESTIONS', payload: result });
+        const randomQuestions = getRandomQuestions(result, maxQuestions);
+        dispatch({ type: 'SET_QUESTIONS', payload: randomQuestions });
     }
     const handleAnswer = (isCorrect) => {
         if (isCorrect) {
             dispatch({ type: 'INCREMENT_SCORE' });
         }
         setTimeout(() => {
+            if (state.questionIndex === state.questions.length - 1) {
+                dispatch({ type: 'END_GAME' });
+                return;
+            }
             dispatch({ type: 'INCREMENT_INDEX' });
         }, 3000);
     };

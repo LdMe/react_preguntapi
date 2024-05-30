@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { LoggedInContext } from "../context/loggedInContext";
-
+import { LoggedInContext } from "../../context/loggedInContext";
+import "./Navbar.css";
 const Navbar =() =>{
     const loggedIn = useContext(LoggedInContext);
     return (

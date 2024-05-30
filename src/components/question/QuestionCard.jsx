@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Timer from "../Timer"
+import Timer from "../timer/Timer"
 import "./Question.css";
 const QuestionCard = ({ question, onAnswer }) => {
     const [isCorrect, setIsCorrect] = useState(null);
@@ -15,12 +15,15 @@ const QuestionCard = ({ question, onAnswer }) => {
             return;
         }
         setIsAnswered(true);
-        setIsCorrect(question.correct_answer === answer_key);
-        onAnswer(question.correct_answer === answer_key);
+        setIsCorrect(isCorrectAnswer(answer_key));
+        onAnswer(isCorrectAnswer(answer_key));
+    }
+    function isCorrectAnswer(answer_key) {
+        return question.correct_answer === answer_key;
     }
     const getAnswers = (answers) => {
         const result = Object.keys(answers).map(answer_key => {
-            return <button disabled={isAnswered} onClick={() => handleAnswerClick(answer_key)} key={answer_key}>{answers[answer_key]}</button>
+            return <button className={"answer" + (isAnswered ? (isCorrectAnswer(answer_key) ? " correct" : " incorrect") : "")} disabled={isAnswered} onClick={() => handleAnswerClick(answer_key)} key={answer_key}>{answers[answer_key]}</button>
         })
         return result;
     }
@@ -34,14 +37,16 @@ const QuestionCard = ({ question, onAnswer }) => {
     return (
         <article className="question-card">
             {!isAnswered &&
-                <Timer onEnd={handleTimeout} maxTime={10} />
+                <Timer onEnd={handleTimeout} maxTime={30} />
 
             }
             <h2>{question.question}</h2>
             {isCorrect !== null &&
                 <p className={isCorrect ? "correct" : "incorrect"}>{message}</p>
             }
-            {getAnswers(question.answers)}
+            <section className="answers">
+                {getAnswers(question.answers)}
+            </section>
         </article>
     )
 }

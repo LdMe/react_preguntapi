@@ -1,6 +1,6 @@
 import { useState,useEffect } from "react";
-import { getCategories } from "../utils/fetch";
-
+import { getCategories } from "../../utils/fetch";
+import "./Categories.css";
 const Categories = ({onSelect}) =>{
     const [categories,setCategories] = useState([]);
 
