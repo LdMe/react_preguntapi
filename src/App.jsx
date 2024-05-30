@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import Register from './components/Register'
 import Categories from "./components/Categories"
-import { getCategories } from './utils/fetch'
 import './App.css'
 import { LoggedInContext } from './context/loggedInContext'
 import Navbar from './components/Navbar'

@@ -1,53 +1,57 @@
 import { getQuestions } from "../../utils/fetch"
-import { useEffect,useState } from "react";
+import { useEffect, useReducer } from "react";
 import QuestionCard from "../question/QuestionCard";
-const Game = ({category,maxQuestions =3,onReset}) =>{
-    const [questions,setQuestions] = useState([]);
-    const [questionIndex,setQuestionIndex] = useState(0);
-    const [score,setScore] = useState(0);
-    const [isEnded,setIsEnded] = useState(false);
+import gameReducer from "../../reducers/gameReducer";
 
-    console.log(questions);
-    useEffect(()=>{
+const initialState = {
+    questions: [],
+    questionIndex: 0,
+    score: 0,
+    isEnded: false
+};
+const Game = ({ category, maxQuestions = 3, onReset }) => {
+    const [state, dispatch] = useReducer(gameReducer, initialState)
+
+    useEffect(() => {
         fetchQuestions(category);
-    },[category])
-    useEffect(()=>{
-        if(questionIndex >= maxQuestions){
-            setIsEnded(true);
+    }, [category])
+    useEffect(() => {
+        if (state.questionIndex >= maxQuestions) {
+            dispatch({ type: 'END_GAME' });
         }
-    },[questionIndex])
-    async function fetchQuestions (category){
+    }, [state.questionIndex, maxQuestions]);
+    async function fetchQuestions(category) {
         const result = await getQuestions(category);
-        setQuestions(result);
+        dispatch({ type: 'SET_QUESTIONS', payload: result });
     }
-    const handleAnswer = (isCorrect)=>{
-        if(isCorrect){
-            setScore(score => score + 1);
+    const handleAnswer = (isCorrect) => {
+        if (isCorrect) {
+            dispatch({ type: 'INCREMENT_SCORE' });
         }
-        setTimeout(()=>{
-            setQuestionIndex(questionIndex => questionIndex +1);
-        },3000);
+        setTimeout(() => {
+            dispatch({ type: 'INCREMENT_INDEX' });
+        }, 3000);
+    };
+    if (state.questions.length === 0) {
+        return <p>cargando...</p>;
     }
-    if(questions.length === 0){
-        return <p>cargarndo...</p>
-    }
-    if(isEnded){
+    if (state.isEnded) {
         return (
             <section className="game-over">
-                <p>Partida terminada, puntuación: {score}</p>
+                <p>Partida terminada, puntuación: {state.score}</p>
+                <button onClick={onReset}>Reiniciar</button>
             </section>
-            )
+        );
     }
-    return(
+    return (
         <section className="game">
-            <h1> Categoría: {category}</h1>
-            <QuestionCard  key={questions[questionIndex]._id} question={questions[questionIndex]} onAnswer={handleAnswer}/>
-            <p>Score: {score}</p>
-            <p>Pregunta {questionIndex + 1}/{maxQuestions}</p>
-
+            <h1>Categoría: {category}</h1>
+            <QuestionCard key={state.questions[state.questionIndex]._id} question={state.questions[state.questionIndex]} onAnswer={handleAnswer} />
+            <p>Score: {state.score}</p>
+            <p>Pregunta {state.questionIndex + 1}/{maxQuestions}</p>
             <button onClick={onReset}>Reiniciar</button>
         </section>
-    )
+    );
 }
 
 export default Game;
